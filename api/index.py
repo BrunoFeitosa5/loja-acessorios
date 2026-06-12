@@ -126,7 +126,10 @@ def criar_pedido():
     if not access_token:
         return jsonify({'id': pedido_id, 'mensagem': 'Pedido criado (sem MP configurado)'}), 201
 
-    base_url = request.host_url.rstrip('/')
+    if os.environ.get('VERCEL'):
+        base_url = 'https://loja-acessorios.vercel.app'
+    else:
+        base_url = request.host_url.rstrip('/')
     sdk = mercadopago.SDK(access_token)
 
     is_local = 'localhost' in base_url or '127.0.0.1' in base_url
