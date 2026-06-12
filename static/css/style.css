@@ -460,6 +460,52 @@ header {
 .btn-confirm-pay:hover    { opacity: 0.9; }
 .btn-confirm-pay:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* ── Lightbox ── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  cursor: zoom-out;
+  animation: lb-in 0.18s ease;
+}
+@keyframes lb-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 16px 60px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+.lightbox-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+.product-image { cursor: zoom-in; }
+
 /* ── Checkout: section labels + customer fields ── */
 .ck-section-label {
   font-size: 0.7rem;

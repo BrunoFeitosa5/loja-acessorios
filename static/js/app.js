@@ -41,6 +41,9 @@ const ckFreteVal      = document.getElementById('ckFreteVal');
 const ckTotal         = document.getElementById('ckTotal');
 const btnConfirmPay   = document.getElementById('btnConfirmPay');
 
+const lightbox        = document.getElementById('lightbox');
+const lightboxImg     = document.getElementById('lightboxImg');
+const lightboxClose   = document.getElementById('lightboxClose');
 const reciboOverlay   = document.getElementById('reciboOverlay');
 const reciboBody      = document.getElementById('reciboBody');
 const btnReciboClose  = document.getElementById('btnReciboClose');
@@ -463,6 +466,25 @@ checkoutOverlay.addEventListener('click', e => { if (e.target === checkoutOverla
 btnConfirmPay.addEventListener('click', confirmAndPay);
 btnModalClose.addEventListener('click',  () => { modalOverlay.style.display  = 'none'; });
 btnReciboClose.addEventListener('click', () => { reciboOverlay.style.display = 'none'; });
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.style.display = 'flex';
+}
+function closeLightbox() {
+  lightbox.style.display = 'none';
+  lightboxImg.src = '';
+}
+
+productsGrid.addEventListener('click', e => {
+  const img = e.target.closest('.product-image img');
+  if (img && img.src) openLightbox(img.src, img.alt);
+});
+lightbox.addEventListener('click',       closeLightbox);
+lightboxClose.addEventListener('click',  closeLightbox);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 renderCart();
 loadProducts();
