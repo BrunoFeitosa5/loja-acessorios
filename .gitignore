@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.db
+venv/
+.env
+.vercel
+flask.log
+flask.err
+docs/

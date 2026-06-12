@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bella Joias — Acessórios Femininos</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">Bella Joias</span>
+      </div>
+      <button class="cart-toggle" id="cartToggle" aria-label="Ver carrinho">
+        <span class="cart-icon">🛍</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="store-layout">
+    <section class="products-section">
+      <h2 class="section-title">Nossa Coleção</h2>
+      <div class="products-grid" id="productsGrid">
+        <div class="loading">Carregando produtos...</div>
+      </div>
+    </section>
+
+    <aside class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h3>Seu Carrinho</h3>
+        <button class="close-cart" id="closeCart" aria-label="Fechar carrinho">×</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <p class="cart-empty">Seu carrinho está vazio</p>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display:none">
+        <div class="cart-total">
+          Total: <strong id="cartTotal">R$ 0,00</strong>
+        </div>
+        <button class="btn-checkout" id="btnCheckout">Finalizar Pedido</button>
+      </div>
+    </aside>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay" style="display:none">
+    <div class="modal">
+      <span class="modal-icon">✓</span>
+      <h3>Pedido Realizado!</h3>
+      <p id="modalMsg">Seu pedido foi criado com sucesso.</p>
+      <button class="btn-modal-close" id="btnModalClose">Continuar Comprando</button>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
