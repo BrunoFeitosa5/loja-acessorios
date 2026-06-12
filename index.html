@@ -37,29 +37,83 @@
         <p class="cart-empty">Seu carrinho está vazio</p>
       </div>
       <div class="cart-footer" id="cartFooter" style="display:none">
-        <div class="cep-section">
-          <p class="cep-label">Calcular frete</p>
-          <div class="cep-row">
-            <input type="text" id="cepInput" placeholder="00000-000" maxlength="9"
-              class="cep-input" inputmode="numeric" autocomplete="postal-code">
-          </div>
-          <div class="cep-info" id="cepInfo"></div>
-        </div>
         <div class="cart-total">
-          <span>Subtotal</span>
-          <strong id="cartSubtotal">R$ 0,00</strong>
-        </div>
-        <div class="cart-frete" id="freteRow" style="display:none">
-          <span>Frete <small id="prazoText"></small></span>
-          <strong id="freteValor">R$ 0,00</strong>
-        </div>
-        <div class="cart-total cart-total-final">
           Total: <strong id="cartTotal">R$ 0,00</strong>
         </div>
         <button class="btn-checkout" id="btnCheckout">Finalizar Pedido</button>
       </div>
     </aside>
   </main>
+
+  <div class="checkout-overlay" id="checkoutOverlay" style="display:none">
+    <div class="checkout-modal">
+      <div class="checkout-header">
+        <h3>Endereço de Entrega</h3>
+        <button class="close-checkout" id="closeCheckout" aria-label="Fechar">×</button>
+      </div>
+      <div class="checkout-body">
+        <div class="form-group">
+          <label for="ckCep">CEP *</label>
+          <input id="ckCep" type="text" placeholder="00000-000" maxlength="9"
+            inputmode="numeric" autocomplete="postal-code">
+          <div class="cep-status" id="ckCepStatus"></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group fg-rua">
+            <label for="ckRua">Rua *</label>
+            <input id="ckRua" type="text" placeholder="Rua, Avenida..." readonly>
+          </div>
+          <div class="form-group fg-num">
+            <label for="ckNumero">Número *</label>
+            <input id="ckNumero" type="text" placeholder="123" autocomplete="address-line2">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ckComp">Complemento <span class="lbl-opt">(opcional)</span></label>
+          <input id="ckComp" type="text" placeholder="Apto, bloco, casa...">
+        </div>
+        <div class="form-group">
+          <label for="ckBairro">Bairro *</label>
+          <input id="ckBairro" type="text" placeholder="Bairro" readonly>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group fg-cidade">
+            <label for="ckCidade">Cidade</label>
+            <input id="ckCidade" type="text" placeholder="Cidade" readonly>
+          </div>
+          <div class="form-group fg-uf">
+            <label for="ckEstado">UF</label>
+            <input id="ckEstado" type="text" placeholder="UF" maxlength="2" readonly>
+          </div>
+        </div>
+        <div class="frete-card" id="freteCard" style="display:none">
+          <div class="frete-card-row">
+            <span>Prazo de entrega</span>
+            <span id="fretePrazo"></span>
+          </div>
+          <div class="frete-card-row frete-card-valor">
+            <span>Frete</span>
+            <strong id="freteCardValor"></strong>
+          </div>
+        </div>
+        <div class="checkout-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="ckSubtotal">R$ 0,00</span>
+          </div>
+          <div class="summary-row" id="ckFreteRow" style="display:none">
+            <span>Frete</span>
+            <span id="ckFreteVal"></span>
+          </div>
+          <div class="summary-row summary-total">
+            <strong>Total</strong>
+            <strong id="ckTotal">R$ 0,00</strong>
+          </div>
+        </div>
+      </div>
+      <button class="btn-confirm-pay" id="btnConfirmPay">Confirmar e Pagar</button>
+    </div>
+  </div>
 
   <div class="modal-overlay" id="modalOverlay" style="display:none">
     <div class="modal">
