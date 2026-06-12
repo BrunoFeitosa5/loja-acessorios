@@ -181,6 +181,15 @@ def criar_pedido():
         'mensagem': 'Pedido criado com sucesso!'
     }), 201
 
+@app.route('/api/debug-token', methods=['GET'])
+def debug_token():
+    token = os.environ.get('MP_ACCESS_TOKEN', '')
+    return jsonify({
+        'token_set': bool(token),
+        'token_preview': token[:20] + '...' if len(token) > 20 else token,
+        'token_length': len(token)
+    })
+
 @app.route('/api/webhook', methods=['POST'])
 def webhook():
     data = request.get_json(silent=True) or {}
