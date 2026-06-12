@@ -157,9 +157,15 @@ def criar_pedido():
         preference_data["notification_url"] = f"{base_url}/api/webhook"
 
     pref_response = sdk.preference().create(preference_data)
+    status_code = pref_response.get("status")
     pref = pref_response.get("response", {})
     init_point = pref.get("init_point", "")
     mp_preference_id = pref.get("id", "")
+
+    if not init_point:
+        import sys
+        print(f"[MP ERROR] status={status_code} response={pref}", file=sys.stderr)
+        return jsonify({'erro': f'Mercado Pago recusou a preferência (status {status_code}): {pref}'}), 502
 
     conn = get_db()
     conn.execute(
