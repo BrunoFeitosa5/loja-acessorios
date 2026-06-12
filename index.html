@@ -37,7 +37,23 @@
         <p class="cart-empty">Seu carrinho está vazio</p>
       </div>
       <div class="cart-footer" id="cartFooter" style="display:none">
+        <div class="cep-section">
+          <p class="cep-label">Calcular frete</p>
+          <div class="cep-row">
+            <input type="text" id="cepInput" placeholder="00000-000" maxlength="9"
+              class="cep-input" inputmode="numeric" autocomplete="postal-code">
+          </div>
+          <div class="cep-info" id="cepInfo"></div>
+        </div>
         <div class="cart-total">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">R$ 0,00</strong>
+        </div>
+        <div class="cart-frete" id="freteRow" style="display:none">
+          <span>Frete <small id="prazoText"></small></span>
+          <strong id="freteValor">R$ 0,00</strong>
+        </div>
+        <div class="cart-total cart-total-final">
           Total: <strong id="cartTotal">R$ 0,00</strong>
         </div>
         <button class="btn-checkout" id="btnCheckout">Finalizar Pedido</button>

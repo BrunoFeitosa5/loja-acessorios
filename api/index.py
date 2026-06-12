@@ -59,7 +59,8 @@ def init_db():
         nome TEXT NOT NULL,
         descricao TEXT,
         preco REAL NOT NULL,
-        imagem TEXT
+        imagem TEXT,
+        estoque INTEGER NOT NULL DEFAULT 10
     )''')
     cur.execute('''CREATE TABLE IF NOT EXISTS pedidos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -68,18 +69,27 @@ def init_db():
         status TEXT DEFAULT 'pendente',
         mp_preference_id TEXT,
         mp_payment_id TEXT,
+        cep TEXT,
+        frete REAL DEFAULT 0,
         criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
-    # Adiciona colunas novas em bancos antigos sem essas colunas
+
     for col_def in [
         "status TEXT DEFAULT 'pendente'",
         "mp_preference_id TEXT",
         "mp_payment_id TEXT",
+        "cep TEXT",
+        "frete REAL DEFAULT 0",
     ]:
         try:
             cur.execute(f'ALTER TABLE pedidos ADD COLUMN {col_def}')
         except sqlite3.OperationalError:
             pass
+
+    try:
+        cur.execute('ALTER TABLE produtos ADD COLUMN estoque INTEGER NOT NULL DEFAULT 10')
+    except sqlite3.OperationalError:
+        pass
 
     if cur.execute('SELECT COUNT(*) FROM produtos').fetchone()[0] == 0:
         for p in PRODUTOS_INICIAIS:
@@ -110,13 +120,16 @@ def criar_pedido():
     data = request.get_json(silent=True) or {}
     itens = data.get('itens', [])
     total = data.get('total', 0)
+    cep = data.get('cep', '')
+    frete = float(data.get('frete', 0))
+
     if not itens:
         return jsonify({'erro': 'Carrinho vazio'}), 400
 
     conn = get_db()
     cur = conn.execute(
-        "INSERT INTO pedidos (itens, total, status) VALUES (?,?,'pendente')",
-        (json.dumps(itens), total)
+        "INSERT INTO pedidos (itens, total, status, cep, frete) VALUES (?,?,'pendente',?,?)",
+        (json.dumps(itens), total, cep, frete)
     )
     pedido_id = cur.lastrowid
     conn.commit()
@@ -134,16 +147,25 @@ def criar_pedido():
 
     is_local = 'localhost' in base_url or '127.0.0.1' in base_url
 
+    mp_items = [
+        {
+            "title": item.get('nome', 'Produto'),
+            "quantity": int(item.get('quantidade', 1)),
+            "unit_price": float(item.get('preco', 0)),
+            "currency_id": "BRL"
+        }
+        for item in itens
+    ]
+    if frete > 0:
+        mp_items.append({
+            "title": "Frete",
+            "quantity": 1,
+            "unit_price": frete,
+            "currency_id": "BRL"
+        })
+
     preference_data = {
-        "items": [
-            {
-                "title": item.get('nome', 'Produto'),
-                "quantity": int(item.get('quantidade', 1)),
-                "unit_price": float(item.get('preco', 0)),
-                "currency_id": "BRL"
-            }
-            for item in itens
-        ],
+        "items": mp_items,
         "back_urls": {
             "success": f"{base_url}/?payment=success",
             "failure": f"{base_url}/?payment=failure",
@@ -205,6 +227,20 @@ def webhook():
             external_ref = payment.get('external_reference')
             if external_ref:
                 conn = get_db()
+                if status == 'approved':
+                    pedido = conn.execute(
+                        'SELECT itens FROM pedidos WHERE id = ?',
+                        (int(external_ref),)
+                    ).fetchone()
+                    if pedido:
+                        for item in json.loads(pedido['itens']):
+                            pid = item.get('produto_id')
+                            qty = int(item.get('quantidade', 1))
+                            if pid:
+                                conn.execute(
+                                    'UPDATE produtos SET estoque = MAX(0, estoque - ?) WHERE id = ?',
+                                    (qty, pid)
+                                )
                 conn.execute(
                     'UPDATE pedidos SET status = ?, mp_payment_id = ? WHERE id = ?',
                     (status, str(payment_id), int(external_ref))
