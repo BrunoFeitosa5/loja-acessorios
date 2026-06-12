@@ -7,3 +7,5 @@ venv/
 flask.log
 flask.err
 docs/
+
+.vercel
