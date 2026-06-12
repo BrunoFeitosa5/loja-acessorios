@@ -460,6 +460,16 @@ header {
 .btn-confirm-pay:hover    { opacity: 0.9; }
 .btn-confirm-pay:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* ── Cart backdrop (mobile) ── */
+.cart-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(61, 43, 43, 0.4);
+  z-index: 149;
+}
+.cart-backdrop.active { display: block; }
+
 /* ── Lightbox ── */
 .lightbox {
   position: fixed;
@@ -666,13 +676,19 @@ header {
 
 @media (max-width: 768px) {
   .store-layout { flex-direction: column; padding: 1rem; }
+
   .cart-sidebar {
-    width: 100%;
-    position: static;
+    position: fixed;
+    top: 68px;
+    right: 1rem;
+    width: min(320px, calc(100vw - 2rem));
+    max-height: calc(100vh - 82px);
+    overflow-y: auto;
+    z-index: 150;
     border-radius: 16px;
-    max-height: none;
-    overflow-y: visible;
+    box-shadow: 0 8px 40px rgba(61, 43, 43, 0.25);
   }
+
   .checkout-modal { max-height: 96vh; border-radius: 16px; }
   .recibo-modal   { border-radius: 16px; }
   .fg-tel { flex: 0 0 130px; }

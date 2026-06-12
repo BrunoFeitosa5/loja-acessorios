@@ -41,6 +41,7 @@ const ckFreteVal      = document.getElementById('ckFreteVal');
 const ckTotal         = document.getElementById('ckTotal');
 const btnConfirmPay   = document.getElementById('btnConfirmPay');
 
+const cartBackdrop    = document.getElementById('cartBackdrop');
 const lightbox        = document.getElementById('lightbox');
 const lightboxImg     = document.getElementById('lightboxImg');
 const lightboxClose   = document.getElementById('lightboxClose');
@@ -79,6 +80,18 @@ function saveCart() {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
+function isMobile() { return window.innerWidth <= 768; }
+
+function openCartPanel() {
+  cartSidebar.classList.remove('cart-closed');
+  if (isMobile()) cartBackdrop.classList.add('active');
+}
+
+function closeCartPanel() {
+  cartSidebar.classList.add('cart-closed');
+  cartBackdrop.classList.remove('active');
+}
+
 function addToCart(product) {
   if (product.estoque === 0) return;
   const existing = cart.find(i => i.produto_id === product.id);
@@ -88,7 +101,7 @@ function addToCart(product) {
     cart.push({ produto_id: product.id, nome: product.nome, preco: product.preco, quantidade: 1 });
   }
   saveCart();
-  cartSidebar.classList.remove('cart-closed');
+  openCartPanel();
   renderCart();
 }
 
@@ -458,8 +471,12 @@ ckCep.addEventListener('input', e => {
 ckCpf.addEventListener('input',      e => { e.target.value = formatCpf(e.target.value); });
 ckTelefone.addEventListener('input', e => { e.target.value = formatTel(e.target.value); });
 
-cartToggle.addEventListener('click',  () => cartSidebar.classList.toggle('cart-closed'));
-closeCart.addEventListener('click',   () => cartSidebar.classList.add('cart-closed'));
+cartToggle.addEventListener('click', () => {
+  if (cartSidebar.classList.contains('cart-closed')) openCartPanel();
+  else closeCartPanel();
+});
+closeCart.addEventListener('click',    closeCartPanel);
+cartBackdrop.addEventListener('click', closeCartPanel);
 btnCheckout.addEventListener('click', openCheckout);
 closeCheckout.addEventListener('click', closeCheckoutModal);
 checkoutOverlay.addEventListener('click', e => { if (e.target === checkoutOverlay) closeCheckoutModal(); });
@@ -485,6 +502,8 @@ productsGrid.addEventListener('click', e => {
 lightbox.addEventListener('click',       closeLightbox);
 lightboxClose.addEventListener('click',  closeLightbox);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+if (isMobile()) cartSidebar.classList.add('cart-closed');
 
 renderCart();
 loadProducts();
