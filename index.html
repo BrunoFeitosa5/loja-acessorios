@@ -48,10 +48,32 @@
   <div class="checkout-overlay" id="checkoutOverlay" style="display:none">
     <div class="checkout-modal">
       <div class="checkout-header">
-        <h3>Endereço de Entrega</h3>
+        <h3>Finalizar Pedido</h3>
         <button class="close-checkout" id="closeCheckout" aria-label="Fechar">×</button>
       </div>
       <div class="checkout-body">
+
+        <div class="ck-section-label">Dados Pessoais</div>
+        <div class="form-group">
+          <label for="ckNome">Nome completo *</label>
+          <input id="ckNome" type="text" placeholder="Seu nome completo" autocomplete="name">
+        </div>
+        <div class="form-row-2">
+          <div class="form-group fg-email">
+            <label for="ckEmail">Email *</label>
+            <input id="ckEmail" type="email" placeholder="seu@email.com" autocomplete="email">
+          </div>
+          <div class="form-group fg-tel">
+            <label for="ckTelefone">Telefone</label>
+            <input id="ckTelefone" type="tel" placeholder="(00) 00000-0000" inputmode="numeric">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ckCpf">CPF <span class="lbl-opt">(opcional)</span></label>
+          <input id="ckCpf" type="text" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+        </div>
+
+        <div class="ck-section-label">Endereço de Entrega</div>
         <div class="form-group">
           <label for="ckCep">CEP *</label>
           <input id="ckCep" type="text" placeholder="00000-000" maxlength="9"
@@ -86,6 +108,7 @@
             <input id="ckEstado" type="text" placeholder="UF" maxlength="2" readonly>
           </div>
         </div>
+
         <div class="frete-card" id="freteCard" style="display:none">
           <div class="frete-card-row">
             <span>Prazo de entrega</span>
@@ -112,6 +135,23 @@
         </div>
       </div>
       <button class="btn-confirm-pay" id="btnConfirmPay">Confirmar e Pagar</button>
+    </div>
+  </div>
+
+  <div class="recibo-overlay" id="reciboOverlay" style="display:none">
+    <div class="recibo-modal">
+      <div class="recibo-header">
+        <div class="recibo-brand">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">Bella Joias</span>
+        </div>
+        <p class="recibo-sub">Comprovante de Pedido</p>
+      </div>
+      <div class="recibo-body" id="reciboBody"></div>
+      <div class="recibo-actions">
+        <button class="btn-print" onclick="window.print()">Imprimir</button>
+        <button class="btn-recibo-close" id="btnReciboClose">Fechar</button>
+      </div>
     </div>
   </div>
 

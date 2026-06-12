@@ -72,6 +72,7 @@ def init_db():
         cep TEXT,
         frete REAL DEFAULT 0,
         endereco TEXT,
+        cliente TEXT,
         criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
 
@@ -82,6 +83,7 @@ def init_db():
         "cep TEXT",
         "frete REAL DEFAULT 0",
         "endereco TEXT",
+        "cliente TEXT",
     ]:
         try:
             cur.execute(f'ALTER TABLE pedidos ADD COLUMN {col_def}')
@@ -125,14 +127,15 @@ def criar_pedido():
     cep = data.get('cep', '')
     frete = float(data.get('frete', 0))
     endereco = data.get('endereco', {})
+    cliente = data.get('cliente', {})
 
     if not itens:
         return jsonify({'erro': 'Carrinho vazio'}), 400
 
     conn = get_db()
     cur = conn.execute(
-        "INSERT INTO pedidos (itens, total, status, cep, frete, endereco) VALUES (?,?,'pendente',?,?,?)",
-        (json.dumps(itens), total, cep, frete, json.dumps(endereco))
+        "INSERT INTO pedidos (itens, total, status, cep, frete, endereco, cliente) VALUES (?,?,'pendente',?,?,?,?)",
+        (json.dumps(itens), total, cep, frete, json.dumps(endereco), json.dumps(cliente))
     )
     pedido_id = cur.lastrowid
     conn.commit()
