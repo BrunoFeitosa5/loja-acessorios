@@ -127,7 +127,7 @@ def criar_pedido():
         return jsonify({'id': pedido_id, 'mensagem': 'Pedido criado (sem MP configurado)'}), 201
 
     if os.environ.get('VERCEL'):
-        base_url = 'https://loja-acessorios.vercel.app'
+        base_url = 'https://loja-teste-rose.vercel.app'
     else:
         base_url = request.host_url.rstrip('/')
     sdk = mercadopago.SDK(access_token)
